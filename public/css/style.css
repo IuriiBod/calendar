@@ -1,0 +1,43 @@
+.calendar-header {
+	height: 100px;
+	background-color: #F4F4F4;
+	border-bottom: 2px solid #DFDFDF;
+	margin-top: 30px; 
+}
+
+.calendar-menu {
+	float: left;
+	width: 100%;
+}
+
+.calendar-select-date {
+	float: left;
+	width: 100%;
+}
+
+.add-edit-event {
+	margin: 50px 0px 10px 20px;
+}
+
+.add-edit-event button:first-child {
+	margin-right: 5px;
+}
+
+.search-event {
+	margin: 50px 10px 0px 20px;	
+}
+
+.select-date-btn-container {
+	margin: 10px 0 10px 20px;
+}
+
+.select-date-btn-container .select-date-btn {
+	margin: 0 5px;
+    background-color: #fff;
+    border-color: #DFDFDF;
+    color: #000;	
+}
+
+.select-date-btn-container .show-current-date {
+	display: inline-block;
+}
