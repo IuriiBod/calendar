@@ -41,3 +41,8 @@
 .select-date-btn-container .show-current-date {
 	display: inline-block;
 }
+
+.show-current-date {
+	width: 110px;
+	text-align: center;
+}

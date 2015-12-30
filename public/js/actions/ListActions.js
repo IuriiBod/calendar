@@ -19,6 +19,11 @@ var ListActions = {
 	    AppDispatcher.dispatch({
 	      type: ActionTypes.GET_PREV_MONTH
 	    });
+	},
+	getToday: function() {
+	    AppDispatcher.dispatch({
+	      type: ActionTypes.GET_TODAY
+	    });
 	}
 
 };

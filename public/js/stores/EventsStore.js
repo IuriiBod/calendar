@@ -1,9 +1,9 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
-//var ChatMessageUtils = require('../utils/ChatMessageUtils');
+var StorageUtils = require('../utils/StorageUtils');
+var ConversionDateUtils = require('../utils/ConversionDateUtils');
 var EventEmitter = require('events').EventEmitter;
 //var ThreadStore = require('../stores/ThreadStore');
-var strings = require('../settings');
 var assign = require('object-assign');
 
 var ActionTypes = Constants.ActionTypes;
@@ -41,24 +41,45 @@ var EventsStore = assign({}, EventEmitter.prototype, {
   },
 
   getCurrentMonth: function() {
-    var date = new Date();
     
-    console.log(date);
-    console.log(Date.parse('2012-01-26'));
+    var currentdate = '',
+        date = StorageUtils.getCurrentDate();
 
+    if (date) {
 
-    var month = strings.month[date.getMonth()];
-    var str = month +' '+ date.getFullYear();
+      date = new Date(date.currentdate);
+      currentdate = ConversionDateUtils.conversionDate(date);
 
-    return {date: str};
+    } else {
+
+      return this._getToday();
+      
+    }
+    
+    return {currentdate: currentdate};
   },
 
   _getNextMonth: function() {
-    return {mars: 'mars'};
+    var date = StorageUtils.changeDate('inc');
+    var currentdate = ConversionDateUtils.conversionDate(date);
+
+    return {currentdate: currentdate};
   },
 
   _getPrevMonth: function() {
-    return {jan: 'jan'};
+    var date = StorageUtils.changeDate('dec');
+    var currentdate = ConversionDateUtils.conversionDate(date);
+
+    return {currentdate: currentdate};
+  },
+
+  _getToday: function() {
+    var date = new Date();
+
+      StorageUtils.setCurrentDate({currentdate: date});
+    var  currentdate = ConversionDateUtils.conversionDate(date);
+
+    return {currentdate: currentdate};
   }
 
 });
@@ -83,6 +104,11 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case ActionTypes.GET_PREV_MONTH:
       EventsStore._getPrevMonth();
+      EventsStore.emitChange();
+      break;
+
+    case ActionTypes.GET_TODAY:
+      EventsStore._getToday();
       EventsStore.emitChange();
       break;
 
