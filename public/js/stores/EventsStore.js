@@ -32,14 +32,6 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  get: function(id) {
-    return _events[id];
-  },
-
-  getAll: function() {
-    return _events;
-  },
-
   getCurrentMonth: function() {
     
     var currentdate = '',
@@ -53,7 +45,7 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     } else {
 
       return this._getToday();
-      
+
     }
     
     return {currentdate: currentdate};

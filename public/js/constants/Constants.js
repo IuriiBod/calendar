@@ -6,7 +6,8 @@ module.exports = {
   	GET_CURRENT_MONTH: null,
     GET_NEXT_MONTH: null,
     GET_PREV_MONTH: null,
-    GET_TODAY: null
+    GET_TODAY: null,
+    GET_QUANTITY_DAYS: null
   })
 
 };
