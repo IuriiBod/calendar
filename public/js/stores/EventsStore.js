@@ -96,16 +96,6 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     StorageUtils.deleteOccasion(id);
   }
 
-//   function isEmpty(obj) {
-//     for(var prop in obj) {
-//         if(obj.hasOwnProperty(prop))
-//             return false;
-//     }
-
-//     return true;
-// }
-  
-
 });
 
 EventsStore.dispatchToken = AppDispatcher.register(function(action) {
