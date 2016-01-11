@@ -31,13 +31,20 @@ var ListActions = {
 	      dayId: dayId
 	    });
 	},
+	getCurrentDay: function() {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.GET_CURRENT_DAY
+	    });
+	},
+
 	createNewOccasion: function(id, obj) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.CREATE_NEW_OCCASION,
-	      idoccasion: id,
+	      id: id,
 	      occasion: obj
 	    });	
 	},
+	
 	deleteOccasion: function(id) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.DELETE_OCCASION,

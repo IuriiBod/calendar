@@ -9,6 +9,7 @@ module.exports = {
     GET_TODAY: null,
     GET_QUANTITY_DAYS: null,
     SET_CURRENT_DAY:null,
+    GET_CURRENT_DAY:null,
     CREATE_NEW_OCCASION:null,
     DELETE_OCCASION:null
   })

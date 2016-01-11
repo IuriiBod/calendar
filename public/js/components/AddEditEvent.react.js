@@ -4,20 +4,32 @@ var EventsStore = require('../stores/EventsStore');
 var StorageUtils = require('../utils/StorageUtils');
 var strings = require('../settings');
 var Modal = require('react-modal');
+var assign = require('object-assign');
 
 var appElement = document.getElementById('add-edit-event');
 Modal.setAppElement(appElement);
 
 function getCurrentDay() {
-  return EventsStore.getCurrentDay();
+	
+	var obj = EventsStore.getCurrentDay();
+	var d = new Date( obj.dayId );
+	var str = d.getDate() +' '+  strings.month[d.getMonth()] +' '+ d.getFullYear();
+
+	return { 
+		dayId: obj.dayId,
+		currentday: str,
+		occasion: obj.occasion ? obj.occasion : '',
+		names: obj.names ? obj.names : '',
+		text: obj.text ? obj.text : ''
+	};
+
 }
 
 var AddEditEvent = React.createClass({
 
 	getInitialState: function() {
-		return { 
-			modalIsOpen: false 
-		};
+		var obj = assign({ modalIsOpen: false }, getCurrentDay() );
+		return obj;
 	},
 
 	componentDidMount: function() {
@@ -31,43 +43,12 @@ var AddEditEvent = React.createClass({
 	openModal: function() {
 		
 		this.setState({modalIsOpen: true});
-
-		var obj = getCurrentDay();
-		this._setDate(obj.dayId);
-		this._setOccasion(obj.dayId);
+		ListActions.getCurrentDay();
+		
 	},
 
 	closeModal: function() {
 		this.setState({modalIsOpen: false});
-	},
-
-	_setDate: function(date) {
-		var d = new Date( date );
-		var str = d.getDate() +' '+  strings.month[d.getMonth()] +' '+ d.getFullYear();
-
-		this.setState({
-			dayId: date,
-			currentday: str
-	    });
-	},
-
-	_setOccasion: function(idDay) {
-
-		var obj = JSON.parse( StorageUtils.getOccasion(idDay) );
-
-		if(obj) {
-	  		this.setState({
-				occasion: obj.occasion,
-				names: obj.names,
-				text: obj.text
-		    });
-	  	} else {
-	  		this.setState({
-				occasion: '',
-				names: '',
-				text: ''
-		    });
-	  	}
 	},
 
 	_handleOccasionChange: function(event) {
@@ -108,7 +89,7 @@ var AddEditEvent = React.createClass({
 		  		text: text
 	    	};
 
-	    ListActions.createNewOccasion( this.state.dayId, JSON.stringify(obj) );
+	    ListActions.createNewOccasion( this.state.dayId, obj );
 
 	    this.closeModal();
 	    

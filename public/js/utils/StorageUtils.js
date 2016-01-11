@@ -19,17 +19,39 @@ module.exports = {
 			date.setMonth(date.getMonth() - 1);			
 		}
 		
-		this.setCurrentDate({currentdate: date});
+		this.setCurrentDate({currentdate: Date.parse(date)});
 
 		return date;
 	},
 	saveOccasion: function(id, obj) {
-		localStorage.setItem(id, obj);	
+		
+		var events = JSON.parse(localStorage.getItem("events"));
+
+		if (events) {
+			events[id] = obj;
+		} else {
+			events = {};
+			events[id] = obj;
+		}
+		
+		localStorage.setItem("events", JSON.stringify(events));
+
 	},
 	getOccasion: function(id) {
-		return localStorage.getItem(id);
+		
+		var events = JSON.parse(localStorage.getItem("events"));
+		
+		if(events) {
+			return events[id];
+		}
+
+		return false;
 	},
 	deleteOccasion: function(id) {
-		localStorage.removeItem(id);
+
+		var events = JSON.parse(localStorage.getItem("events"));
+		delete events[id];
+
+		localStorage.setItem("events", JSON.stringify(events));
 	}
 };

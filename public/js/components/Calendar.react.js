@@ -39,7 +39,7 @@ var Calendar = React.createClass({
     },
 
     _onClick: function(item) {
-    	ListActions.setIdDay(item.id);
+      ListActions.setIdDay(item.id);
 	},	
 
 	render: function() {

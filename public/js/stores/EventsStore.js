@@ -8,8 +8,6 @@ var assign = require('object-assign');
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 
-var _events = {};
-
 var currentDay = {};
 
 var EventsStore = assign({}, EventEmitter.prototype, {
@@ -37,7 +35,7 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     if (date) {
       date = new Date(date.currentdate);
     } else {
-      date = this._getToday();
+      date = new Date(this._getToday());
     }
     
     currentdate = ConversionDateUtils.conversionDate(date);
@@ -55,9 +53,10 @@ var EventsStore = assign({}, EventEmitter.prototype, {
 
   _getToday: function() {
     var date = new Date();
+    date = Date.parse(date);
 
     StorageUtils.setCurrentDate({currentdate: date});
-    
+
     return date;
   },
 
@@ -75,21 +74,29 @@ var EventsStore = assign({}, EventEmitter.prototype, {
   },
 
   getCurrentDay: function() {
+    var obj = {};
 
     for(var prop in currentDay) {
-        if(currentDay.hasOwnProperty(prop))
-            return currentDay;
+        if(currentDay.hasOwnProperty(prop)) {
+            obj = assign(currentDay, this._getOccasion(currentDay.dayId));
+            return obj;
+        }    
     }
 
     var date = StorageUtils.getCurrentDate();
     date = new Date(date.currentdate);
-    currentDay.dayId = date;
+    currentDay.dayId = Date.parse(date);
 
-    return currentDay;
+    obj = assign(currentDay, this._getOccasion(currentDay.dayId));
+    return obj;
   },
 
-  _createNewOccasion: function(id, occasion) {
-    StorageUtils.saveOccasion(id, occasion);
+  _createNewOccasion: function(id, obj) {
+    StorageUtils.saveOccasion(id, obj);
+  },
+
+  _getOccasion: function(id) {
+    return StorageUtils.getOccasion(id);
   },
 
   _deleteOccasion: function(id) {
@@ -101,10 +108,6 @@ var EventsStore = assign({}, EventEmitter.prototype, {
 EventsStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch(action.type) {
-
-    case ActionTypes.CREATE_EVENT:
-      _addEvent(action.data);
-      break;
 
     case ActionTypes.GET_CURRENT_MONTH:
       _getCurrentMonth();
@@ -128,11 +131,16 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case ActionTypes.SET_CURRENT_DAY:
       EventsStore._setCurrentDay(action.dayId);
+      //EventsStore.emitChange();
+      break;
+
+    case ActionTypes.GET_CURRENT_DAY:
+      EventsStore.getCurrentDay();
       EventsStore.emitChange();
       break;
 
     case ActionTypes.CREATE_NEW_OCCASION:
-      EventsStore._createNewOccasion(action.idoccasion, action.occasion);
+      EventsStore._createNewOccasion(action.id, action.occasion);
       EventsStore.emitChange();
       break;
 
