@@ -22,5 +22,14 @@ module.exports = {
 		this.setCurrentDate({currentdate: date});
 
 		return date;
+	},
+	saveOccasion: function(id, obj) {
+		localStorage.setItem(id, obj);	
+	},
+	getOccasion: function(id) {
+		return localStorage.getItem(id);
+	},
+	deleteOccasion: function(id) {
+		localStorage.removeItem(id);
 	}
 };

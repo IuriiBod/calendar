@@ -24,6 +24,25 @@ var ListActions = {
 	    AppDispatcher.dispatch({
 	      type: ActionTypes.GET_TODAY
 	    });
+	},
+	setIdDay: function(dayId) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.SET_CURRENT_DAY,
+	      dayId: dayId
+	    });
+	},
+	createNewOccasion: function(id, obj) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.CREATE_NEW_OCCASION,
+	      idoccasion: id,
+	      occasion: obj
+	    });	
+	},
+	deleteOccasion: function(id) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.DELETE_OCCASION,
+	      idoccasion: id
+	    });		
 	}
 
 };

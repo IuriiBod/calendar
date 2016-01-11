@@ -3,7 +3,6 @@ var Constants = require('../constants/Constants');
 var StorageUtils = require('../utils/StorageUtils');
 var ConversionDateUtils = require('../utils/ConversionDateUtils');
 var EventEmitter = require('events').EventEmitter;
-//var ThreadStore = require('../stores/ThreadStore');
 var assign = require('object-assign');
 
 var ActionTypes = Constants.ActionTypes;
@@ -11,9 +10,7 @@ var CHANGE_EVENT = 'change';
 
 var _events = {};
 
-function _addEvent(data) {
-  _events = data.event;
-}
+var currentDay = {};
 
 var EventsStore = assign({}, EventEmitter.prototype, {
 
@@ -38,41 +35,76 @@ var EventsStore = assign({}, EventEmitter.prototype, {
         date = StorageUtils.getCurrentDate();
 
     if (date) {
-
       date = new Date(date.currentdate);
-      currentdate = ConversionDateUtils.conversionDate(date);
-
     } else {
-
-      return this._getToday();
-
+      date = this._getToday();
     }
+    
+    currentdate = ConversionDateUtils.conversionDate(date);
     
     return {currentdate: currentdate};
   },
 
   _getNextMonth: function() {
     var date = StorageUtils.changeDate('inc');
-    var currentdate = ConversionDateUtils.conversionDate(date);
-
-    return {currentdate: currentdate};
   },
 
   _getPrevMonth: function() {
     var date = StorageUtils.changeDate('dec');
-    var currentdate = ConversionDateUtils.conversionDate(date);
-
-    return {currentdate: currentdate};
   },
 
   _getToday: function() {
     var date = new Date();
 
-      StorageUtils.setCurrentDate({currentdate: date});
-    var  currentdate = ConversionDateUtils.conversionDate(date);
+    StorageUtils.setCurrentDate({currentdate: date});
+    
+    return date;
+  },
 
-    return {currentdate: currentdate};
+  _getCalendar: function() {
+
+    var date = StorageUtils.getCurrentDate();
+    date = new Date(date.currentdate);
+
+    return ConversionDateUtils.buildCalendar(date);   
+
+  },
+  
+  _setCurrentDay: function(dayId) {
+    currentDay.dayId = dayId;
+  },
+
+  getCurrentDay: function() {
+
+    for(var prop in currentDay) {
+        if(currentDay.hasOwnProperty(prop))
+            return currentDay;
+    }
+
+    var date = StorageUtils.getCurrentDate();
+    date = new Date(date.currentdate);
+    currentDay.dayId = date;
+
+    return currentDay;
+  },
+
+  _createNewOccasion: function(id, occasion) {
+    StorageUtils.saveOccasion(id, occasion);
+  },
+
+  _deleteOccasion: function(id) {
+    StorageUtils.deleteOccasion(id);
   }
+
+//   function isEmpty(obj) {
+//     for(var prop in obj) {
+//         if(obj.hasOwnProperty(prop))
+//             return false;
+//     }
+
+//     return true;
+// }
+  
 
 });
 
@@ -101,6 +133,21 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case ActionTypes.GET_TODAY:
       EventsStore._getToday();
+      EventsStore.emitChange();
+      break;
+
+    case ActionTypes.SET_CURRENT_DAY:
+      EventsStore._setCurrentDay(action.dayId);
+      EventsStore.emitChange();
+      break;
+
+    case ActionTypes.CREATE_NEW_OCCASION:
+      EventsStore._createNewOccasion(action.idoccasion, action.occasion);
+      EventsStore.emitChange();
+      break;
+
+    case ActionTypes.DELETE_OCCASION:
+      EventsStore._deleteOccasion(action.idoccasion);
       EventsStore.emitChange();
       break;
 

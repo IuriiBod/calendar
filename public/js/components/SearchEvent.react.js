@@ -3,7 +3,7 @@ var React = require('react');
 var SearchEvent = React.createClass({
 	render: function() {
 		return (
-			<div className = "pull-right search-event">
+			<div className = "search-event">
 				<form className = "form-inline">
 					<button type="submit" className = "btn">
 						<span className = "glyphicon glyphicon-search" aria-hidden="true"></span>

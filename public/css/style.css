@@ -1,21 +1,19 @@
-.calendar-header {
-	height: 100px;
-	background-color: #F4F4F4;
-	border-bottom: 2px solid #DFDFDF;
-	margin-top: 30px; 
+.calendar-container {
+	float: left;
+	width: 700px;
 }
 
 .calendar-menu {
 	float: left;
 	width: 100%;
-}
-
-.calendar-select-date {
-	float: left;
-	width: 100%;
+	background-color: #F4F4F4;
+	border-bottom: 2px solid #DFDFDF;
 }
 
 .add-edit-event {
+	float: left;
+	width: 40%;
+	box-sizing: border-box;
 	margin: 50px 0px 10px 20px;
 }
 
@@ -24,11 +22,15 @@
 }
 
 .search-event {
-	margin: 50px 10px 0px 20px;	
+	float: right;
+	width: 40%;
+	box-sizing: border-box;
+	margin: 50px 10px 10px 20px;	
 }
 
 .select-date-btn-container {
-	margin: 10px 0 10px 20px;
+	float: left;
+	margin: 0 0 10px 20px;
 }
 
 .select-date-btn-container .select-date-btn {
@@ -45,4 +47,42 @@
 .show-current-date {
 	width: 110px;
 	text-align: center;
+}
+
+.calendar {
+	float: left;
+	width: 100%;
+	margin-bottom: 30px;
+	font-size: 12px;
+}
+
+.calendar .days {
+	float: left;
+	width: 100px;
+	height: 100px;
+	border: 1px solid #DFDFDF;
+}
+
+.calendar .days:hover {
+	background-color: #B0E0E6;
+}
+
+.calendar .dayselected {
+	background-color: #6495ED;
+}
+
+
+.days .number {
+	float: left;
+	font-weight: bold;
+} 
+
+.days .title {
+	float: left;
+	margin-right: 5px;
+	color: #808080;
+}
+
+.days .occasion {
+	color: #00BFFF;
 }
