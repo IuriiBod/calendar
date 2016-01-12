@@ -12,11 +12,9 @@ function getSearchEvents() {
 	if (results.length > 0) {
 		$('#search-result').show();
 		return {results: results};
-	} else {
-		$('#search-result').hide();
-		return {q:'', results: results}
 	}
 
+	return {results: []};
 }
 
 var SearchEvent = React.createClass({
@@ -35,6 +33,12 @@ var SearchEvent = React.createClass({
       SearchStore.removeChangeListener(this._onChange);
     },
 
+    _onClick: function(id) {
+  		ListActions.setToday(id);
+		$('#search-result').hide();
+  		this.setState({q:''});
+	},
+	
 	render: function() {
 		
 		return (
@@ -48,8 +52,10 @@ var SearchEvent = React.createClass({
 							placeholder="события, дата или участник" value={this.state.q} onChange={this._handleQChange} />
 						<ul className = "search-result-ul" id = "search-result">
 					        {this.state.results.map(function(result) {
-					           return <ListItemSearchResult key={result.dayId} data={result}/>;
-					        })}
+					        	return <li key={result.dayId} onClick={this._onClick.bind(this, result.dayId)}>
+							    			{result.names}: {result.occasion}
+										</li>;
+					        }, this)}
 					    </ul>
 					</div>
 				</form>
@@ -80,20 +86,6 @@ var SearchEvent = React.createClass({
 	_onChange: function() {
       this.setState(getSearchEvents());
     }
-
-});
-
-var ListItemSearchResult = React.createClass({
-  render: function() {
-    return <li onClick={this._onClick.bind(this, this.props.data.dayId)}>
-    			{this.props.data.names}: {this.props.data.occasion}
-			</li>;
-  },
-
-  _onClick: function(id) {
-  	ListActions.setToday(id);
-  	ListActions.searchOccasion('');
-  }
 
 });
 
