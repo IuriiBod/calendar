@@ -2,11 +2,11 @@ var React = require('react');
 var AddEditEvent = require('./AddEditEvent.react');
 var SearchEvent = require('./SearchEvent.react');
 var ListActions = require('../actions/ListActions');
-var EventsStore = require('../stores/EventsStore');
+var CalendarStore = require('../stores/CalendarStore');
 
 
 function getCurrentMonth() {
-  return EventsStore.getCurrentMonth();
+  return CalendarStore.getCurrentMonth();
 }
 
 var Calendar = React.createClass({
@@ -16,11 +16,11 @@ var Calendar = React.createClass({
     },
 
     componentDidMount: function() {
-      EventsStore.addChangeListener(this._onChange);
+      CalendarStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
-      EventsStore.removeChangeListener(this._onChange);
+      CalendarStore.removeChangeListener(this._onChange);
     },
     
     _nextMonth: function(event) {
@@ -44,9 +44,9 @@ var Calendar = React.createClass({
 
 	render: function() {
     
-    var items = EventsStore._getCalendar();
+    var items = CalendarStore.getCalendar();
 
-	var itemHtml = items.map( function( listItem ) {
+  	var itemHtml = items.map( function( listItem ) {
    
         return <div className = "days" key = { listItem.id }  onClick={this._onClick.bind(this, listItem)}>
 	            <p className = "title">{ listItem.title }</p> 
@@ -56,7 +56,7 @@ var Calendar = React.createClass({
 	            <p className = "occasion">{ listItem.text }</p>
           </div>;
 
-    }.bind(this));
+    }, this);
 
 		return (
 			<div className = "calendar-container">

@@ -9,9 +9,9 @@ var assign = require('object-assign');
 var appElement = document.getElementById('add-edit-event');
 Modal.setAppElement(appElement);
 
-function getCurrentDay() {
+function getEventsCurrentDay() {
 	
-	var obj = EventsStore.getCurrentDay();
+	var obj = EventsStore.getOccasionsCurrentDay();
 	var d = new Date( obj.dayId );
 	var str = d.getDate() +' '+  strings.month[d.getMonth()] +' '+ d.getFullYear();
 
@@ -28,7 +28,7 @@ function getCurrentDay() {
 var AddEditEvent = React.createClass({
 
 	getInitialState: function() {
-		var obj = assign({ modalIsOpen: false }, getCurrentDay() );
+		var obj = assign({ modalIsOpen: false }, getEventsCurrentDay() );
 		return obj;
 	},
 
@@ -43,7 +43,7 @@ var AddEditEvent = React.createClass({
 	openModal: function() {
 		
 		this.setState({modalIsOpen: true});
-		ListActions.getCurrentDay();
+		ListActions.getEventsCurrentDay();
 		
 	},
 
@@ -142,7 +142,7 @@ var AddEditEvent = React.createClass({
 	},
 
     _onChange: function() {
-      this.setState(getCurrentDay());
+      this.setState(getEventsCurrentDay());
     }
 
 });

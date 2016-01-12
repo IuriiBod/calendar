@@ -20,6 +20,12 @@ var ListActions = {
 	      type: ActionTypes.GET_PREV_MONTH
 	    });
 	},
+	setToday: function(dayId) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.SET_TODAY,
+	      dayId: dayId
+	    });
+	},
 	getToday: function() {
 	    AppDispatcher.dispatch({
 	      type: ActionTypes.GET_TODAY
@@ -31,9 +37,9 @@ var ListActions = {
 	      dayId: dayId
 	    });
 	},
-	getCurrentDay: function() {
+	getEventsCurrentDay: function() {
 		AppDispatcher.dispatch({
-	      type: ActionTypes.GET_CURRENT_DAY
+	      type: ActionTypes.GET_OCCASION_CURRENT_DAY
 	    });
 	},
 
@@ -49,6 +55,13 @@ var ListActions = {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.DELETE_OCCASION,
 	      idoccasion: id
+	    });		
+	},
+
+	searchOccasion: function(q) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.SEARCH_OCCASION,
+	      q: q
 	    });		
 	}
 

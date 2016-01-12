@@ -114,11 +114,11 @@ module.exports = {
   _parseOccasionCurrentDay: function(idDay, day) {
 
   	var obj = StorageUtils.getOccasion(idDay) ;
-      if (obj) {
-      	day.occasion = obj.occasion;
-    		day.names = obj.names;
-    		day.text = obj.text;
-      }
+
+  	day.occasion = obj.occasion ? obj.occasion : '';
+		day.names = obj.names ? obj.names : '';
+		day.text = obj.text ? obj.text : '';
+      
   }
 
 };

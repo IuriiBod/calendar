@@ -41,11 +41,11 @@ module.exports = {
 		
 		var events = JSON.parse(localStorage.getItem("events"));
 		
-		if(events) {
+		if(events[id]) {
 			return events[id];
 		}
 
-		return false;
+		return {};
 	},
 	deleteOccasion: function(id) {
 
@@ -53,5 +53,32 @@ module.exports = {
 		delete events[id];
 
 		localStorage.setItem("events", JSON.stringify(events));
+	},
+	searchOccasion: function(q) {
+
+		var events = JSON.parse(localStorage.getItem("events")),
+			str = '',
+			result = [],
+			q = q ? q : '';
+
+		for (var dayid in events) {
+			for (var key in events[dayid]) {
+				str = events[dayid][key];
+
+				if ( typeof(str) === "string") {
+					
+					str = str.toLowerCase();
+					q = q.toLowerCase();
+					
+					if ( str.indexOf(q) >= 0 ) {
+						result.push(events[dayid]);
+						break;
+					}	
+				}
+				
+			}
+		}
+
+		return result;
 	}
 };

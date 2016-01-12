@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
+var CalendarStore = require('./CalendarStore');
 var StorageUtils = require('../utils/StorageUtils');
 var ConversionDateUtils = require('../utils/ConversionDateUtils');
 var EventEmitter = require('events').EventEmitter;
@@ -7,8 +8,6 @@ var assign = require('object-assign');
 
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
-
-var currentDay = {};
 
 var EventsStore = assign({}, EventEmitter.prototype, {
 
@@ -27,80 +26,24 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getCurrentMonth: function() {
-    
-    var currentdate = '',
-        date = StorageUtils.getCurrentDate();
-
-    if (date) {
-      date = new Date(date.currentdate);
-    } else {
-      date = new Date(this._getToday());
-    }
-    
-    currentdate = ConversionDateUtils.conversionDate(date);
-    
-    return {currentdate: currentdate};
-  },
-
-  _getNextMonth: function() {
-    var date = StorageUtils.changeDate('inc');
-  },
-
-  _getPrevMonth: function() {
-    var date = StorageUtils.changeDate('dec');
-  },
-
-  _getToday: function() {
-    var date = new Date();
-    date = Date.parse(date);
-
-    StorageUtils.setCurrentDate({currentdate: date});
-
-    return date;
-  },
-
-  _getCalendar: function() {
-
-    var date = StorageUtils.getCurrentDate();
-    date = new Date(date.currentdate);
-
-    return ConversionDateUtils.buildCalendar(date);   
-
-  },
-  
-  _setCurrentDay: function(dayId) {
-    currentDay.dayId = dayId;
-  },
-
-  getCurrentDay: function() {
-    var obj = {};
-
-    for(var prop in currentDay) {
-        if(currentDay.hasOwnProperty(prop)) {
-            obj = assign(currentDay, this._getOccasion(currentDay.dayId));
-            return obj;
-        }    
-    }
-
-    var date = StorageUtils.getCurrentDate();
-    date = new Date(date.currentdate);
-    currentDay.dayId = Date.parse(date);
-
-    obj = assign(currentDay, this._getOccasion(currentDay.dayId));
-    return obj;
-  },
-
   _createNewOccasion: function(id, obj) {
     StorageUtils.saveOccasion(id, obj);
   },
 
-  _getOccasion: function(id) {
-    return StorageUtils.getOccasion(id);
+  getOccasionsCurrentDay: function() {
+
+    var dayId = CalendarStore.getCurrentDay();
+    var obj = assign({dayId: dayId}, StorageUtils.getOccasion(dayId));
+
+    return obj;
   },
 
   _deleteOccasion: function(id) {
     StorageUtils.deleteOccasion(id);
+  },
+
+  searchOccasion: function(q) {
+    StorageUtils.searchOccasion(q);
   }
 
 });
@@ -109,43 +52,18 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch(action.type) {
 
-    case ActionTypes.GET_CURRENT_MONTH:
-      _getCurrentMonth();
-      EventsStore.emitChange();
-      break;
-
-    case ActionTypes.GET_NEXT_MONTH:
-      EventsStore._getNextMonth();
-      EventsStore.emitChange();
-      break;
-
-    case ActionTypes.GET_PREV_MONTH:
-      EventsStore._getPrevMonth();
-      EventsStore.emitChange();
-      break;
-
-    case ActionTypes.GET_TODAY:
-      EventsStore._getToday();
-      EventsStore.emitChange();
-      break;
-
-    case ActionTypes.SET_CURRENT_DAY:
-      EventsStore._setCurrentDay(action.dayId);
-      //EventsStore.emitChange();
-      break;
-
-    case ActionTypes.GET_CURRENT_DAY:
-      EventsStore.getCurrentDay();
-      EventsStore.emitChange();
-      break;
-
     case ActionTypes.CREATE_NEW_OCCASION:
       EventsStore._createNewOccasion(action.id, action.occasion);
-      EventsStore.emitChange();
+      CalendarStore.emitChange();
       break;
 
     case ActionTypes.DELETE_OCCASION:
       EventsStore._deleteOccasion(action.idoccasion);
+      CalendarStore.emitChange();
+      break;
+
+    case ActionTypes.GET_OCCASION_CURRENT_DAY:
+      EventsStore.getOccasionsCurrentDay();
       EventsStore.emitChange();
       break;
 
