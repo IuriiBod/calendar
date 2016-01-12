@@ -58,7 +58,7 @@ var SearchEvent = React.createClass({
 	},
 
 	handleSubmit: function() {
-		console.log('submit search');
+		return false;
 	},
 
 	_handleQChange: function(event) {

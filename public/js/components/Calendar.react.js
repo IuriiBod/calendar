@@ -40,7 +40,7 @@ var Calendar = React.createClass({
 
     _onClick: function(id) {
       ListActions.setIdDay(id);
-	},	
+	  },	
 
 	render: function() {
     
@@ -55,7 +55,6 @@ var Calendar = React.createClass({
 	            <p className = "occasion">{ listItem.names }</p>
 	            <p className = "occasion">{ listItem.text }</p>
           </div>;
-
     }, this);
 
 		return (
@@ -75,8 +74,8 @@ var Calendar = React.createClass({
 
 				<div className = "calendar">
 					<div className="message-list" ref="messageList">
-			            { itemHtml }
-		          	</div>
+            { itemHtml }
+        	</div>
 				</div>
 			</div>
 		)
