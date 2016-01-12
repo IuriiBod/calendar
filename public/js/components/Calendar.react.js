@@ -38,8 +38,8 @@ var Calendar = React.createClass({
       ListActions.getToday();
     },
 
-    _onClick: function(item) {
-      ListActions.setIdDay(item.id);
+    _onClick: function(id) {
+      ListActions.setIdDay(id);
 	},	
 
 	render: function() {
@@ -48,7 +48,7 @@ var Calendar = React.createClass({
 
   	var itemHtml = items.map( function( listItem ) {
    
-        return <div className = "days" key = { listItem.id }  onClick={this._onClick.bind(this, listItem)}>
+        return <div className = "days" onClick={this._onClick.bind(this, listItem.id)}>
 	            <p className = "title">{ listItem.title }</p> 
 	            <p className = "number">{ listItem.number }</p>
 	            <p className = "occasion">{ listItem.occasion }</p>

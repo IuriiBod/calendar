@@ -56,6 +56,10 @@ module.exports = {
 	},
 	searchOccasion: function(q) {
 
+		if (q === '') {
+			return [];
+		}
+
 		var events = JSON.parse(localStorage.getItem("events")),
 			str = '',
 			result = [],

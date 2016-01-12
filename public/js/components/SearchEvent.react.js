@@ -11,9 +11,12 @@ function getSearchEvents() {
 
 	if (results.length > 0) {
 		$('#search-result').show();
+		return {results: results};
+	} else {
+		$('#search-result').hide();
+		return {q:'', results: results}
 	}
 
-	return {results: results};
 }
 
 var SearchEvent = React.createClass({
@@ -89,7 +92,7 @@ var ListItemSearchResult = React.createClass({
 
   _onClick: function(id) {
   	ListActions.setToday(id);
-  	$('#search-result').hide();
+  	ListActions.searchOccasion('');
   }
 
 });
