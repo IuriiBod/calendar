@@ -40,11 +40,11 @@ module.exports = {
 	getOccasion: function(id) {
 		
 		var events = JSON.parse(localStorage.getItem("events"));
-		
-		if(events[id]) {
+
+		if(events && events[id]) {
 			return events[id];
 		}
-
+		
 		return {};
 	},
 	deleteOccasion: function(id) {
@@ -79,6 +79,7 @@ module.exports = {
 			}
 		}
 
+		console.log(result);
 		return result;
 	}
 };

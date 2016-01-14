@@ -73,8 +73,8 @@ var CalendarStore = assign({}, EventEmitter.prototype, {
 
   },
   
-  _setCurrentDay: function(dayId) {
-  	currentDay = dayId;
+  _setCurrentDay: function(date_id) {
+    currentDay = date_id;
   },
 
   getCurrentDay: function() {
@@ -110,7 +110,7 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case ActionTypes.SET_TODAY:
-      CalendarStore._setToday(action.dayId);
+      CalendarStore._setToday(action.date_id);
       CalendarStore.emitChange();
       break;
 
@@ -120,7 +120,7 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case ActionTypes.SET_CURRENT_DAY:
-      CalendarStore._setCurrentDay(action.dayId);
+      CalendarStore._setCurrentDay(action.date_id);
       //CalendarStore.emitChange();
       break;
 

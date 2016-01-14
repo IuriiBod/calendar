@@ -12,11 +12,11 @@ Modal.setAppElement(appElement);
 function getEventsCurrentDay() {
 	
 	var obj = EventsStore.getOccasionsCurrentDay();
-	var d = new Date( obj.dayId );
+	var d = new Date( obj.date_id );
 	var str = d.getDate() +' '+  strings.month[d.getMonth()] +' '+ d.getFullYear();
 
 	return { 
-		dayId: obj.dayId,
+		date_id: obj.date_id,
 		currentday: str,
 		occasion: obj.occasion ? obj.occasion : '',
 		names: obj.names ? obj.names : '',
@@ -66,7 +66,7 @@ var AddEditEvent = React.createClass({
 	_handleDelOccasion: function(event) {
 		event.preventDefault();
 
-		ListActions.deleteOccasion( this.state.dayId);
+		ListActions.deleteOccasion( this.state.date_id);
 
 	    this.closeModal();
 	},
@@ -83,13 +83,13 @@ var AddEditEvent = React.createClass({
 	    }
 
 	    var obj = {
-	    		dayId: this.state.dayId,
+	    		date_id: this.state.date_id,
 		  		occasion: occasion,
 		  		names: names,
 		  		text: text
 	    	};
 
-	    ListActions.createNewOccasion( this.state.dayId, obj );
+	    ListActions.createNewOccasion( this.state.date_id, obj );
 
 	    this.closeModal();
 	    

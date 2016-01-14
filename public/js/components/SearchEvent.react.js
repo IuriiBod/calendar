@@ -10,7 +10,7 @@ function getSearchEvents() {
 	var results = SearchStore.getSearchResult();
 
 	if (results.length > 0) {
-		$('#search-result').show();
+		$('#show-search-result-container').show();
 		return {results: results};
 	}
 
@@ -35,7 +35,7 @@ var SearchEvent = React.createClass({
 
     _onClick: function(id) {
   		ListActions.setToday(id);
-		$('#search-result').hide();
+		$('#show-search-result-container').hide();
   		this.setState({q:''});
 	},
 	
@@ -50,13 +50,20 @@ var SearchEvent = React.createClass({
 					<div className = "form-group search-event-group">
 						<input type="text" className = "form-control" id="searchevent_field" name="q"
 							placeholder="события, дата или участник" value={this.state.q} onChange={this._handleQChange} />
-						<ul className = "search-result-ul" id = "search-result">
-					        {this.state.results.map(function(result) {
-					        	return <li key={result.dayId} onClick={this._onClick.bind(this, result.dayId)}>
-							    			{result.names}: {result.occasion}
-										</li>;
-					        }, this)}
-					    </ul>
+						<div className="show-search-result-container" id="show-search-result-container">
+							<div className = "search-result-list">
+						        {this.state.results.map(function(result) {
+						        	return 	<div className="item-result">
+							        			<div className="result" key={result.date_id} onClick={this._onClick.bind(this, result.date_id)}>
+							        				<p className="result-occasion">{result.occasion}</p>
+							        				<p className="result-date">{result.names}</p>
+									    		</div>
+									    		<div className="line-separetor-result">
+									    		</div>
+								    		</div>;
+						        }, this)}
+						    </div>
+				    	</div>
 					</div>
 				</form>
 			</div>
@@ -74,7 +81,7 @@ var SearchEvent = React.createClass({
 		this.setState({q: q});	
 
 		if (q.length < 3) {
-			$('#search-result').hide();
+			$('#show-search-result-container').hide();
 		} else {
 	        this.state.timer = window.setTimeout(
 	        	ListActions.searchOccasion( q ), 

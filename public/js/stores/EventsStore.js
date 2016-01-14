@@ -26,14 +26,14 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  _createNewOccasion: function(id, obj) {
-    StorageUtils.saveOccasion(id, obj);
+  _createNewOccasion: function(date_id, obj) {
+    StorageUtils.saveOccasion(date_id, obj);
   },
 
   getOccasionsCurrentDay: function() {
 
-    var dayId = CalendarStore.getCurrentDay();
-    var obj = assign({dayId: dayId}, StorageUtils.getOccasion(dayId));
+    var date_id = CalendarStore.getCurrentDay();
+    var obj = assign({date_id: date_id}, StorageUtils.getOccasion(date_id));
 
     return obj;
   },
@@ -53,7 +53,7 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case ActionTypes.CREATE_NEW_OCCASION:
-      EventsStore._createNewOccasion(action.id, action.occasion);
+      EventsStore._createNewOccasion(action.date_id, action.occasion);
       CalendarStore.emitChange();
       break;
 

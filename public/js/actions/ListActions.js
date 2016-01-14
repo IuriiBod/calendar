@@ -20,10 +20,10 @@ var ListActions = {
 	      type: ActionTypes.GET_PREV_MONTH
 	    });
 	},
-	setToday: function(dayId) {
+	setToday: function(date_id) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.SET_TODAY,
-	      dayId: dayId
+	      date_id: date_id
 	    });
 	},
 	getToday: function() {
@@ -31,10 +31,10 @@ var ListActions = {
 	      type: ActionTypes.GET_TODAY
 	    });
 	},
-	setIdDay: function(dayId) {
+	setIdDay: function(date_id) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.SET_CURRENT_DAY,
-	      dayId: dayId
+	      date_id: date_id
 	    });
 	},
 	getEventsCurrentDay: function() {
@@ -43,10 +43,10 @@ var ListActions = {
 	    });
 	},
 
-	createNewOccasion: function(id, obj) {
+	createNewOccasion: function(date_id, obj) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.CREATE_NEW_OCCASION,
-	      id: id,
+	      date_id: date_id,
 	      occasion: obj
 	    });	
 	},

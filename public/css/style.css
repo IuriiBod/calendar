@@ -32,30 +32,120 @@
 	position: relative;
 }
 
-.search-result-ul {
+.show-search-result-container {
 	display: none;
+	position: absolute;
+	top: 44px;
 	width: 100%;
-	background: #fff;
-    padding: 5px;
-    position: absolute;
-    top: 43px;
-    padding-left: 20px;
-    color: green;
-    border: 1px solid #DFDFDF;
-    border-radius: 10px;
+	max-height: 250px;
+	border-radius: 2px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
 
-.search-result-ul::after {
-	content: ''; 
-    position: absolute;
-    left: 20px; top: -20px;
-    border: 10px solid transparent;
-    border-bottom: 10px solid #DFDFDF;
+.show-search-result-container::before {
+	content: "";
+	position: absolute;
+	border-left: 10px solid rgba(0, 0, 0, 0);
+	border-right: 10px solid rgba(0, 0, 0, 0);
+	border-bottom: 10px solid rgba(0,0,0,0.45);
+	left: 20px;
+	top: -10px;
 }
 
-.search-result-ul li {
-	border-bottom: 1px solid #DFDFDF;
+.show-search-result-container::after {
+	content: "";
+	position: absolute;
+	border-left: 10px solid rgba(0, 0, 0, 0);
+	border-right: 10px solid rgba(0, 0, 0, 0);
+	border-bottom: 10px solid #fff;
+	left: 20px;
+	top: -9px;
+}
+
+.search-result-list {
+	width: 100%;
+	max-height: 240px;
+	margin: 0px;
+	padding: 5px;
+	overflow-y: auto;
+    background: #fff;
+}
+
+.item-result {
+	float: left;
+	width: 100%;
+	background-color: #fff;
+}
+
+.result {
+	float: left;
+	width: 100%;
 	cursor: pointer;
+}
+
+.result:hover {
+	background-color: #00BFFF;
+}
+
+.result:hover > p {
+	color: #fff;
+}
+
+.line-separetor-result {
+	float: left;
+	width: 100%;
+	height: 1px;
+	margin: 2px 0;
+	background-color: #DFDFDF;
+}
+
+.result-occasion {
+	position: relative;
+	display: block;
+	overflow: hidden;
+    white-space: nowrap;
+	width: 100%;
+	margin: 0px;
+	color: #000;
+}
+
+.result-date {
+	position: relative;
+	display: block;
+	overflow: hidden;
+    white-space: nowrap;
+	width: 100%;
+	margin: 0px;
+	color: #A9A9A9;
+	font-size: 11px;
+}
+
+.result > p:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1) 80%);
+    background: -moz-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1) 80%);
+    background: -o-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,1) 80%);
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1) 80%)
+}
+
+.result:hover > p:after {
+	content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+	background: -webkit-linear-gradient(left, rgba(0,191,255,0), rgba(0,191,255,1) 80%);
+    background: -moz-linear-gradient(left, rgba(0,191,255,0), rgba(0,191,255,1) 80%);
+    background: -o-linear-gradient(left, rgba(0,191,255,0), rgba(0,191,255,1) 80%);
+    background: linear-gradient(to right, rgba(0,191,255,0), rgba(0,191,255,1) 80%)
 }
 
 .select-date-btn-container {
