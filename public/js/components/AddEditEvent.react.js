@@ -43,7 +43,7 @@ var AddEditEvent = React.createClass({
 				<button type="button" className = "btn btn-primary" onClick={this.openForm}>Добавить</button>
 				<button type="button" className = "btn btn-primary">Обновить</button>
 
-				{this._showForm}
+				<Form data={this.state.showform}/>
 				
 			</div>
 		)
@@ -57,3 +57,18 @@ var AddEditEvent = React.createClass({
 });
 
 module.exports = AddEditEvent;
+
+var Form = React.createClass({
+	render: function() {
+
+		var cls = {btn: true, day: false};
+		console.log(this.props.data);
+
+		return ( this.props.data )
+		    ? <FormEvent data={cls} />
+		    : <p></p>;
+
+
+	}
+
+});
