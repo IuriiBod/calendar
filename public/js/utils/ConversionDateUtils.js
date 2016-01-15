@@ -1,5 +1,6 @@
 var strings = require('../settings');
 var StorageUtils = require('./StorageUtils');
+var $ = require('jquery');
 
 module.exports = {
 
@@ -39,7 +40,7 @@ module.exports = {
 
   _addDaysBefore: function(date) {
 
-	date.setDate(1);
+    date.setDate(1);
   	var numberFirstDay = this._getNumberFirstDayInMonth(date);
 
   	if (numberFirstDay === 1) {
@@ -49,9 +50,9 @@ module.exports = {
   		numberFirstDay = 7;
   	} 
 
-	var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() - numberFirstDay);
+	 var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() - numberFirstDay);
   	
-  	this._getNumberAndDescription(d, numberFirstDay, false);
+  	this._getNumberAndDescription(d, numberFirstDay);
 
   },
 
@@ -61,11 +62,11 @@ module.exports = {
   	var numberDays = this._getQuantityDaysInMonth(d) + 1;
   	d.setDate(0);
   	
-  	this._getNumberAndDescription(d, numberDays, true);
+  	this._getNumberAndDescription(d, numberDays);
 
   },
 
-  _addDaysAfter: function(date, numberDays) {
+  _addDaysAfter: function(date) {
 
   	var d = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
   	var numberFirstDay = this._getNumberFirstDayInMonth(d);
@@ -79,46 +80,53 @@ module.exports = {
   	var numberFirstDay = 9 - numberFirstDay;
   	d.setDate(0);
   	
-  	this._getNumberAndDescription(d, numberFirstDay, false);
+  	this._getNumberAndDescription(d, numberFirstDay);
 
   },
 
-  _getNumberAndDescription: function(date, numberDays, addId) {
-	var d, day = {}, i = 1, idDay;
+  _getNumberAndDescription: function(date, numberDays) {
+	 
+    var d, day = {}, i = 1, day_id;
 
-	while ( i < numberDays ) {
+    while ( i < numberDays ) {
   		
   		day = {};
   		
   		d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + i);
 
-  		if (addId) {
-  			idDay = Date.parse(d);
-  			day.id = idDay;
-  			
-  			this._parseOccasionCurrentDay(idDay, day);
-  		}
+  		day_id = Date.parse(d);
   		
-  		if (this.days.length < 7) {
-  			day.title = this._getDescriptionDay( d.getDay() );
-  		}
-  		day.number = d.getDate();
-  		      	
-      	this.days.push(day);
+      day.id = day_id;
+      day.number = d.getDate();
+  		
+      if (this.days.length < 7) {
+        day.title = this._getDescriptionDay( d.getDay() ) + ',';
+      }	
+			
+      this._parseOccasionCurrentDay(day_id, day);
+  		
+  		this.days.push(day);
 
-      	i++;
+      i++;
   	}
 
   },
 
-  _parseOccasionCurrentDay: function(idDay, day) {
+  _parseOccasionCurrentDay: function(day_id, day) {
 
-  	var obj = StorageUtils.getOccasion(idDay) ;
+  	var obj = StorageUtils.getOccasion(day_id) ;
+    
+    if ( Object.keys(obj).length ) {
+      day.event = {
+        is_event: true,
+        occasion: obj.occasion,        
+        names: obj.names,
+        text: obj.text
+      }      
+    } else {
+      day.event = { is_event: false, occasion: '', names: '', text: ''}
+    }
 
-  	day.occasion = obj.occasion ? obj.occasion : '';
-		day.names = obj.names ? obj.names : '';
-		day.text = obj.text ? obj.text : '';
-      
-  }
+ }
 
 };

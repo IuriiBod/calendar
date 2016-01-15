@@ -38,6 +38,13 @@ var SearchEvent = React.createClass({
 		$('#show-search-result-container').hide();
   		this.setState({q:''});
 	},
+
+	_mouseOver: function (id) {
+        ListActions.highlightResult(id);
+    },
+    _mouseOut: function (id) {
+        ListActions.rehighlightResult(id);
+    },
 	
 	render: function() {
 		
@@ -54,7 +61,10 @@ var SearchEvent = React.createClass({
 							<div className = "search-result-list">
 						        {this.state.results.map(function(result) {
 						        	return 	<div className="item-result">
-							        			<div className="result" key={result.date_id} onClick={this._onClick.bind(this, result.date_id)}>
+							        			<div className="result" key={result.date_id} 
+							        				onClick={this._onClick.bind(this, result.date_id)}
+							        				onMouseOver={this._mouseOver.bind(this, result.date_id)}
+							        				onMouseOut={this._mouseOut.bind(this, result.date_id)}>
 							        				<p className="result-occasion">{result.occasion}</p>
 							        				<p className="result-date">{result.names}</p>
 									    		</div>

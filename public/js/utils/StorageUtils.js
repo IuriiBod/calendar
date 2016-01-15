@@ -1,16 +1,16 @@
 module.exports = {
 
-	setCurrentDate: function(date) {
-		localStorage.setItem('currentDate', JSON.stringify(date));
+	setDate: function(key, date) {
+		localStorage.setItem(key, JSON.stringify(date));
 	},
 
-	getCurrentDate: function() {
-		return JSON.parse(localStorage.getItem('currentDate'));
+	getDate: function(key) {
+		return JSON.parse(localStorage.getItem(key));
 	},
 
-	changeDate: function(parametr) {
+	changeCurrentMonth: function(parametr) {
 
-		var date = this.getCurrentDate();	
+		var date = this.getDate('currentdate');	
 		date = new Date(date.currentdate);
 
 		if( parametr === 'inc') {
@@ -19,7 +19,7 @@ module.exports = {
 			date.setMonth(date.getMonth() - 1);			
 		}
 		
-		this.setCurrentDate({currentdate: Date.parse(date)});
+		this.setDate('currentdate', {currentdate: Date.parse(date)});
 
 		return date;
 	},
@@ -37,12 +37,12 @@ module.exports = {
 		localStorage.setItem("events", JSON.stringify(events));
 
 	},
-	getOccasion: function(id) {
+	getOccasion: function(day_id) {
 		
 		var events = JSON.parse(localStorage.getItem("events"));
 
-		if(events && events[id]) {
-			return events[id];
+		if(events && events[day_id]) {
+			return events[day_id];
 		}
 		
 		return {};
@@ -79,7 +79,6 @@ module.exports = {
 			}
 		}
 
-		console.log(result);
 		return result;
 	}
 };

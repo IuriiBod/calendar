@@ -30,7 +30,7 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     StorageUtils.saveOccasion(date_id, obj);
   },
 
-  getOccasionsCurrentDay: function() {
+  getEventsCurrentDay: function() {
 
     var date_id = CalendarStore.getCurrentDay();
     var obj = assign({date_id: date_id}, StorageUtils.getOccasion(date_id));
@@ -62,8 +62,8 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitChange();
       break;
 
-    case ActionTypes.GET_OCCASION_CURRENT_DAY:
-      EventsStore.getOccasionsCurrentDay();
+    case ActionTypes.GET_EVENTS_CURRENT_DAY:
+      EventsStore.getEventsCurrentDay();
       EventsStore.emitChange();
       break;
 

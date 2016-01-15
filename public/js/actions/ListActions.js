@@ -5,33 +5,22 @@ var ActionTypes = Constants.ActionTypes;
 
 
 var ListActions = {
-	getCurrentMonth: function() {
+	setNextMonth: function() {
 	    AppDispatcher.dispatch({
-	      type: ActionTypes.GET_MONTH
+	      type: ActionTypes.SET_NEXT_MONTH
 	    });
 	},
-	getNextMonth: function() {
+	setPrevMonth: function() {
 	    AppDispatcher.dispatch({
-	      type: ActionTypes.GET_NEXT_MONTH
+	      type: ActionTypes.SET_PREV_MONTH
 	    });
 	},
-	getPrevMonth: function() {
-	    AppDispatcher.dispatch({
-	      type: ActionTypes.GET_PREV_MONTH
-	    });
-	},
-	setToday: function(date_id) {
+	setToday: function() {
 		AppDispatcher.dispatch({
-	      type: ActionTypes.SET_TODAY,
-	      date_id: date_id
+	      type: ActionTypes.SET_TODAY
 	    });
 	},
-	getToday: function() {
-	    AppDispatcher.dispatch({
-	      type: ActionTypes.GET_TODAY
-	    });
-	},
-	setIdDay: function(date_id) {
+	setIdCurrentDay: function(date_id) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.SET_CURRENT_DAY,
 	      date_id: date_id
@@ -39,10 +28,9 @@ var ListActions = {
 	},
 	getEventsCurrentDay: function() {
 		AppDispatcher.dispatch({
-	      type: ActionTypes.GET_OCCASION_CURRENT_DAY
+	      type: ActionTypes.GET_EVENTS_CURRENT_DAY
 	    });
 	},
-
 	createNewOccasion: function(date_id, obj) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.CREATE_NEW_OCCASION,
@@ -50,7 +38,6 @@ var ListActions = {
 	      occasion: obj
 	    });	
 	},
-	
 	deleteOccasion: function(id) {
 		AppDispatcher.dispatch({
 	      type: ActionTypes.DELETE_OCCASION,
@@ -63,7 +50,49 @@ var ListActions = {
 	      type: ActionTypes.SEARCH_OCCASION,
 	      q: q
 	    });		
+	},
+	highlightResult: function(date_id) {
+		AppDispatcher.dispatch({
+	      	type: ActionTypes.HIGHLIGHT_RESULT,
+			date_id: date_id
+	    });			
+	},
+	rehighlightResult: function(date_id) {
+		AppDispatcher.dispatch({
+	      	type: ActionTypes.RE_HIGHLIGHT_RESULT,
+			date_id: date_id
+	    });			
+	},
+	closeForm: function() {
+		AppDispatcher.dispatch({
+	      	type: ActionTypes.CLOSE_FORM
+		});				
+	},
+	openForm: function() {
+		AppDispatcher.dispatch({
+	      	type: ActionTypes.OPEN_FORM
+		});				
+	},
+
+
+
+
+	getToday: function() {
+	    AppDispatcher.dispatch({
+	      type: ActionTypes.GET_TODAY
+	    });
+	},
+	setIdDay: function(date_id) {
+		AppDispatcher.dispatch({
+	      type: ActionTypes.SET_CURRENT_DAY,
+	      date_id: date_id
+	    });
 	}
+	
+
+	
+	
+
 
 };
 

@@ -8,17 +8,12 @@ var assign = require('object-assign');
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 
-var currentDay;
-
 var CalendarStore = assign({}, EventEmitter.prototype, {
 
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -27,105 +22,155 @@ var CalendarStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getCurrentMonth: function() {
-    
-    var currentdate = '',
-        date = StorageUtils.getCurrentDate();
-
-    if (date) {
-      date = new Date(date.currentdate);
-    } else {
-      date = new Date(this._getToday());
-    }
-    
-    currentdate = ConversionDateUtils.conversionDate(date);
-    
-    return {currentdate: currentdate};
+  setDate: function(key, date) {
+    StorageUtils.setDate(key, date);
   },
 
-  _getNextMonth: function() {
-    var date = StorageUtils.changeDate('inc');
+  getDate: function(key) {
+    return StorageUtils.getDate(key);
   },
 
-  _getPrevMonth: function() {
-    var date = StorageUtils.changeDate('dec');
-  },
-
-  _setToday: function(date) {
-    StorageUtils.setCurrentDate({currentdate: date});
-  },
-
-  _getToday: function() {
+  setToday: function(date) {
     var date = new Date();
+
+    date.setHours(0,0,0,0);
     date = Date.parse(date);
 
-    StorageUtils.setCurrentDate({currentdate: date});
+    this.setDate('today', {today: date});
 
     return date;
   },
 
+  _getToday: function() {
+    return this.getDate('today');
+  },
+
+  getCurrentDate: function() {
+    
+    var date = this.getDate('currentdate');
+
+    if (date) {
+      date = date.currentdate;
+    } else {
+      date = this._getToday();
+      date = date.today;
+      this.setDate('currentdate', {currentdate: date});
+    }
+    
+    date = new Date(date);
+
+    var currentdate = ConversionDateUtils.conversionDate(new Date(date));
+    
+    
+    return {currentdate: currentdate, 
+              highlight: this._getHighlight(),
+              currentday: this.getCurrentDay(),
+              showform: this._showform };
+  },
+
+  _setCurrentDateInToday: function() {
+    var date = this._getToday();
+    this.setDate('currentdate', {currentdate: date.today});
+  },
+
+  _setNextMonth: function() {
+    StorageUtils.changeCurrentMonth('inc');
+  },
+
+  _setPrevMonth: function() {
+    StorageUtils.changeCurrentMonth('dec');
+  },
+
   getCalendar: function() {
 
-    var date = StorageUtils.getCurrentDate();
+    var date = this.getDate('currentdate');
     date = new Date(date.currentdate);
 
     return ConversionDateUtils.buildCalendar(date);   
 
   },
-  
+
   _setCurrentDay: function(date_id) {
-    currentDay = date_id;
+    this.setDate('currentday', {currentday: date_id});
   },
-
+  
   getCurrentDay: function() {
-    
-	  	if (!currentDay) {
-	  		var date = StorageUtils.getCurrentDate();
-	    	date = new Date(date.currentdate);
-	    	currentDay = Date.parse(date);
-	  	}
 
-	    return currentDay;
+    var date = this.getDate('currentday');
+
+    if(date) {
+      return date.currentday;
     }
 
+    date = this._getToday();
+    return  date.today;
+  },
+
+  _setHighlightResult: function(date_id) {
+    this.setDate('highlight', {highlight: date_id});
+  },
+
+  _setRehighlightResult: function(date_id) {
+    this.setDate('highlight', {});
+  },
+
+  _getHighlight: function() {
+    var highlight = this.getDate('highlight');
+        
+    if (highlight && highlight.highlight) {
+      highlight = highlight.highlight;
+    } else {
+      highlight = {};
+    }
+
+    return highlight;
+  },
+
+  _showform: false
+
+
 });
+
+
+
 
 CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch(action.type) {
 
-    case ActionTypes.GET_CURRENT_MONTH:
-      _getCurrentMonth();
+    case ActionTypes.SET_NEXT_MONTH:
+      CalendarStore._setNextMonth();
       CalendarStore.emitChange();
       break;
 
-    case ActionTypes.GET_NEXT_MONTH:
-      CalendarStore._getNextMonth();
-      CalendarStore.emitChange();
-      break;
-
-    case ActionTypes.GET_PREV_MONTH:
-      CalendarStore._getPrevMonth();
+    case ActionTypes.SET_PREV_MONTH:
+      CalendarStore._setPrevMonth();
       CalendarStore.emitChange();
       break;
 
     case ActionTypes.SET_TODAY:
-      CalendarStore._setToday(action.date_id);
-      CalendarStore.emitChange();
-      break;
-
-    case ActionTypes.GET_TODAY:
-      CalendarStore._getToday();
+      CalendarStore.setToday();
+      CalendarStore._setCurrentDateInToday();
       CalendarStore.emitChange();
       break;
 
     case ActionTypes.SET_CURRENT_DAY:
       CalendarStore._setCurrentDay(action.date_id);
-      //CalendarStore.emitChange();
+      CalendarStore.emitChange();
       break;
 
-    case ActionTypes.GET_CURRENT_DAY:
-      CalendarStore.getCurrentDay();
+    case ActionTypes.HIGHLIGHT_RESULT:
+      CalendarStore._setHighlightResult(action.date_id);
+      CalendarStore.emitChange();
+      break;
+
+    case ActionTypes.RE_HIGHLIGHT_RESULT:
+      CalendarStore._setRehighlightResult(action.date_id);
+      CalendarStore.emitChange();
+      break;
+
+    case ActionTypes.CLOSE_FORM:
+      CalendarStore._showform = false;
       CalendarStore.emitChange();
       break;
 
