@@ -21,10 +21,6 @@ var AddEventStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  _setOpenForm: function(bool) {
-  	this._showform = bool;
-  },
-
   getOpenForm: function() {
   	return {
   		showform: this._showform
@@ -41,12 +37,12 @@ AddEventStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case ActionTypes.CLOSE_FORM:
-      AddEventStore._setOpenForm(false);
+      AddEventStore._showform = false;
       AddEventStore.emitChange();
       break;
 
     case ActionTypes.OPEN_FORM:
-      AddEventStore._setOpenForm(true);
+      AddEventStore._showform = true;
       AddEventStore.emitChange();
       break;  
 
