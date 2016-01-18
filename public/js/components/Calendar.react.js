@@ -40,9 +40,12 @@ var Calendar = React.createClass({
 
 	_onClick: function(id) {
 		ListActions.setIdCurrentDay(id);
+		ListActions.closeForm();
+
+		var bool = this.state.showform;
 
 		this.setState({
-			showform: true	
+			showform: !bool	
 		})
 
 		ListActions.getEventsCurrentDay();

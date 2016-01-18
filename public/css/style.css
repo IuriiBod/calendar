@@ -130,6 +130,7 @@
 	position: absolute;
 	top: 44px;
 	width: 100%;
+	z-index: 1;
 	max-height: 250px;
 	border-radius: 2px;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
@@ -169,7 +170,7 @@
 .item-result {
 	float: left;
 	width: 100%;
-	background-color: #fff;
+	background: #fff;
 }
 
 .result {

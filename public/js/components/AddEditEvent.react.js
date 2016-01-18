@@ -23,27 +23,19 @@ var AddEditEvent = React.createClass({
 	},
 	
 	openForm: function() {
+		ListActions.closeForm();
 		ListActions.getEventsCurrentDay();
 		ListActions.openForm();
 	},
 
-	_showForm: function() {
-		var cls = {btn: true, day: false};
-
-		return ( this.state.showform )
-		    ? <FormEvent data={cls} />
-		    : '';
-	},
-
 	render: function() {
-		var cls = {btn: true, day: false};
-
+		
 		return (
     		<div className="add-edit-event" id ="add-edit-event">
 				<button type="button" className = "btn btn-primary" onClick={this.openForm}>Добавить</button>
 				<button type="button" className = "btn btn-primary">Обновить</button>
 
-				<Form data={this.state.showform}/>
+				<ShowForm data={this.state.showform}/>
 				
 			</div>
 		)
@@ -58,17 +50,14 @@ var AddEditEvent = React.createClass({
 
 module.exports = AddEditEvent;
 
-var Form = React.createClass({
+var ShowForm = React.createClass({
+	
 	render: function() {
-
 		var cls = {btn: true, day: false};
-		console.log(this.props.data);
 
 		return ( this.props.data )
 		    ? <FormEvent data={cls} />
 		    : <p></p>;
-
-
 	}
 
 });

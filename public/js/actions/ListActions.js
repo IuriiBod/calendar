@@ -72,27 +72,7 @@ var ListActions = {
 		AppDispatcher.dispatch({
 	      	type: ActionTypes.OPEN_FORM
 		});				
-	},
-
-
-
-
-	getToday: function() {
-	    AppDispatcher.dispatch({
-	      type: ActionTypes.GET_TODAY
-	    });
-	},
-	setIdDay: function(date_id) {
-		AppDispatcher.dispatch({
-	      type: ActionTypes.SET_CURRENT_DAY,
-	      date_id: date_id
-	    });
 	}
-	
-
-	
-	
-
 
 };
 

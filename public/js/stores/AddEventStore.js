@@ -46,8 +46,6 @@ AddEventStore.dispatchToken = AppDispatcher.register(function(action) {
       AddEventStore.emitChange();
       break;  
 
-  
-
     default:
       // do nothing
   }
