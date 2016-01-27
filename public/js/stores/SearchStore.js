@@ -7,17 +7,18 @@ var assign = require('object-assign');
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 
+var _searchResult = [];
+
+function _searchOccasion(q) {
+  _searchResult = StorageUtils.searchOccasion(q);
+}
+
 var SearchStore = assign({}, EventEmitter.prototype, {
   
-  searchResult: [],
-
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -26,12 +27,8 @@ var SearchStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  _searchOccasion: function(q) {
-    this.searchResult = StorageUtils.searchOccasion(q);
-  },
-
   getSearchResult: function() {
-    return this.searchResult;  
+    return _searchResult;  
   }
 
 
@@ -42,7 +39,7 @@ SearchStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case ActionTypes.SEARCH_OCCASION:
-      SearchStore._searchOccasion(action.q);
+      _searchOccasion(action.q);
       SearchStore.emitChange();
       break;
 

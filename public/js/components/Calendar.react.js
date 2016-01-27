@@ -40,28 +40,19 @@ var Calendar = React.createClass({
 
 	_onClick: function(id) {
 		ListActions.setIdCurrentDay(id);
-		ListActions.closeForm();
-
-		var bool = this.state.showform;
-
-		this.setState({
-			showform: !bool	
-		})
-
-		ListActions.getEventsCurrentDay();
 	},	
 
 	_showForm: function(id) {
 		var cls = {btn: false, day: true};
 
-		return ( id === this.state.currentday && this.state.showform)
+		return ( id === this.state.showform )
 		    ? <FormEvent data={cls} />
 		    : '';
 	},
 
 	render: function() {
   	
-  		var items = CalendarStore.getCalendar();
+  		var items = CalendarStore.getCalendarCurrentMonth();
 
 		var itemHtml = items.map( function( listItem ) {
 
@@ -69,7 +60,7 @@ var Calendar = React.createClass({
 				<div 
 					className={ClassNames({
 						'days': true,
-						'current_day': listItem.id === this.props.data.today,
+						'current_day': listItem.id === this.state.today,
 						'event': listItem.event.is_event,
 						'highlight': listItem.id === this.state.highlight
 			        })}

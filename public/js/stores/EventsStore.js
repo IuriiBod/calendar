@@ -1,13 +1,23 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
-var CalendarStore = require('./CalendarStore');
 var StorageUtils = require('../utils/StorageUtils');
-var ConversionDateUtils = require('../utils/ConversionDateUtils');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
+
+function _createNewOccasion(date_id, obj) {
+  StorageUtils.saveOccasion(date_id, obj);
+}
+
+function _deleteOccasion(id) {
+  StorageUtils.deleteOccasion(id);
+}
+
+function  _searchOccasion(q) {
+  StorageUtils.searchOccasion(q);
+}
 
 var EventsStore = assign({}, EventEmitter.prototype, {
 
@@ -15,9 +25,6 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -26,24 +33,12 @@ var EventsStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  _createNewOccasion: function(date_id, obj) {
-    StorageUtils.saveOccasion(date_id, obj);
-  },
-
   getEventsCurrentDay: function() {
 
-    var date_id = CalendarStore.getCurrentDay();
+    var date_id = StorageUtils.getCurrentDay();
     var obj = assign({date_id: date_id}, StorageUtils.getOccasion(date_id));
 
     return obj;
-  },
-
-  _deleteOccasion: function(id) {
-    StorageUtils.deleteOccasion(id);
-  },
-
-  searchOccasion: function(q) {
-    StorageUtils.searchOccasion(q);
   }
 
 });
@@ -53,17 +48,12 @@ EventsStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case ActionTypes.CREATE_NEW_OCCASION:
-      EventsStore._createNewOccasion(action.date_id, action.occasion);
-      CalendarStore.emitChange();
+      _createNewOccasion(action.date_id, action.occasion);
+      EventsStore.emitChange();
       break;
 
     case ActionTypes.DELETE_OCCASION:
-      EventsStore._deleteOccasion(action.idoccasion);
-      CalendarStore.emitChange();
-      break;
-
-    case ActionTypes.GET_EVENTS_CURRENT_DAY:
-      EventsStore.getEventsCurrentDay();
+      _deleteOccasion(action.idoccasion);
       EventsStore.emitChange();
       break;
 

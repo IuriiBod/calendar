@@ -52,7 +52,7 @@ var FormEvent = React.createClass({
 
 	_handleDelOccasion: function(event) {
 		event.preventDefault();
-		ListActions.deleteOccasion( this.state.date_id);
+		ListActions.deleteOccasion( this.state.date_id );
 	},
 
 	handleSubmit: function(event) {
@@ -77,6 +77,7 @@ var FormEvent = React.createClass({
 
 	},
 	_onClick:function(event){
+		//event.preventDefault(); ???
 		event.stopPropagation();
 	},
 

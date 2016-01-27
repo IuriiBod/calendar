@@ -8,6 +8,26 @@ module.exports = {
 		return JSON.parse(localStorage.getItem(key));
 	},
 
+	getToday: function() {
+		var date = new Date();
+
+		date.setHours(0,0,0,0);
+		date = Date.parse(date);
+
+		return date;
+	},
+
+	getCurrentDay: function() {
+
+		var date = this.getDate('currentday');
+
+		if(date) {
+			return date.currentday;
+		}
+
+		return getToday();
+	},
+
 	changeCurrentMonth: function(parametr) {
 
 		var date = this.getDate('currentdate');	

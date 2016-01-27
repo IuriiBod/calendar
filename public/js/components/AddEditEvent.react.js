@@ -1,31 +1,26 @@
 var React = require('react');
 var ListActions = require('../actions/ListActions');
 var FormEvent = require('./FormEvent.react');
-var AddEventStore = require('../stores/AddEventStore');
+var CalendarStore = require('../stores/CalendarStore');
 
-
-function getIsShowForm() {
-  return AddEventStore.getOpenForm();
-}
 
 var AddEditEvent = React.createClass({
 
 	getInitialState: function() {
-		return getIsShowForm();
+		return { showform: false };
 	},
 
 	componentDidMount: function() {
-		AddEventStore.addChangeListener(this._onChange);
+		CalendarStore.addChangeListener(this._onChange);
 	},
 
 	componentWillUnmount: function() {
-		AddEventStore.removeChangeListener(this._onChange);
+		CalendarStore.removeChangeListener(this._onChange);
 	},
-	
+
 	openForm: function() {
 		ListActions.closeForm();
-		ListActions.getEventsCurrentDay();
-		ListActions.openForm();
+		this.setState({showform: !this.state.showform});
 	},
 
 	render: function() {
@@ -43,7 +38,7 @@ var AddEditEvent = React.createClass({
 	},
 
 	_onChange: function() {
-		this.setState(getIsShowForm());
+		this.setState({ showform: false });
 	}
 
 });
