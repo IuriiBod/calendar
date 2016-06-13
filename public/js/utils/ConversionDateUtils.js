@@ -1,6 +1,6 @@
 var strings = require('../settings');
 var StorageUtils = require('./StorageUtils');
-var $ = require('jquery');
+var $ = require('jQuery');
 
 module.exports = {
 

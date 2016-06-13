@@ -1,14 +1,12 @@
 'use strict';
 
 var gulp = require('gulp'),
-    //livereload = require('gulp-livereload'),
-    //babel = require("gulp-babel"),
     server = require( 'gulp-develop-server'),
-    babel = require("gulp-babel"),
+    babel = require('gulp-babel'),
     browserify = require('browserify'),
     babelify = require('babelify'),
     source = require('vinyl-source-stream'),
-    fs = require("fs");
+    fs = require('fs');
 
 
 
@@ -21,7 +19,7 @@ var paths = {
 //babel
 gulp.task('build', function () {
     return browserify(paths.app)
-        .transform("babelify", {presets: ["es2015", "react"]})
+        .transform('babelify', {presets: ['es2015', 'react']})
         .bundle()
         //.pipe(fs.createWriteStream("bundle.js"));
         .pipe(source('bundle.js'))

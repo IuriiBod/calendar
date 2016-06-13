@@ -25,7 +25,7 @@ module.exports = {
 			return date.currentday;
 		}
 
-		return getToday();
+		return this.getToday();
 	},
 
 	changeCurrentMonth: function(parametr) {
